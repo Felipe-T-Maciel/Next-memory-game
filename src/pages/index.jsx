@@ -5,13 +5,12 @@ export default function Home() {
   let gay = {
     cartas : [
       "gabriel",
-      "luka",
-      "gay",
-      "sla",
-      "ola"
+      "Felipe",
+      "henrique",
+      "viado"
     ]
   }
-
+  console.clear()
   const [cartasEmbaralhadas, addCarta] = useState([])
 
   useEffect(() => {
@@ -22,9 +21,6 @@ export default function Home() {
       })
     const randomizeArray = cartasEmbaralhadas.sort(() => 0.5 - Math.random());
     addCarta(randomizeArray.slice(0, (gay.cartas.length*2)));
-
-    
-    
   }, []);
 
   useEffect(()=>{
@@ -36,25 +32,31 @@ export default function Home() {
           carta.classList.add('flip')
           cartasVitoria.push(carta)
           if(cartasVitoria.length==2){
-            if(verificaAcerto(cartasVitoria)){
-              console.log("igual")
-            }
+            verificaAcerto(cartasVitoria)
             cartasVitoria = []
           }
         }
       })
     })
 
-    function verificaAcerto(cartas){
+    const verificaAcerto = (cartas) => {
       if(cartas[0].innerText === cartas[1].innerText){
-        return true
-      }else{
-        
-        return false
+        let arrayTeste = []
+        for (let i = cartasEmbaralhadas.length; i >= 0; i--) {
+          if(cartasEmbaralhadas[i] === cartas[0].innerText || cartasEmbaralhadas[i] === cartas[1].innerText){
+            cartasEmbaralhadas.splice(i, 1)
+          }
+        }
+        cartasEmbaralhadas.forEach(element => {
+          arrayTeste.push(element)
+        });
+        setTimeout(() => {
+          addCarta(arrayTeste)
+        },1000)
       }
     }
-
-    function verificaPodeJogar(carta){
+  
+    const verificaPodeJogar = (carta) => {
       let i = 0 
       cartas.forEach(e => {
         if(e.classList.contains('flip') && e != carta){
@@ -78,10 +80,16 @@ export default function Home() {
 
   return (
     <>
-      <div className="flex duration-1000 gap-[2%] flex-wrap p-[2%] justify-center h-screen items-center" >
-        {cartasEmbaralhadas.map(carta => {
-          return <Card prop = {carta} />
-        })}
+      <div className="flex duration-1000 gap-[2%] flex-wrap p-[2%] justify-center h-screen items-center" onChange={()=>{
+
+      }} >
+        {
+        
+          cartasEmbaralhadas.map((carta) => {
+            return <Card prop = {carta} />
+          })
+        
+        }
       </div>
     </>
   )
