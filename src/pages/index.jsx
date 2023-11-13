@@ -5,19 +5,17 @@ export default function Home() {
   let gay = {
     cartas : [
       "gabriel",
-      "Felipe",
-      "henrique",
-      "viado"
+      "Felipe"
     ]
   }
-  console.clear()
   const [cartasEmbaralhadas, addCarta] = useState([])
+  const [inicio, addNum] = useState(0)
 
   useEffect(() => {
       gay.cartas.map(carta => {
         const vet = cartasEmbaralhadas
         vet.push(carta)
-        addCarta(cartasEmbaralhadas => vet)
+        addCarta(vet)
       })
     const randomizeArray = cartasEmbaralhadas.sort(() => 0.5 - Math.random());
     addCarta(randomizeArray.slice(0, (gay.cartas.length*2)));
@@ -25,6 +23,18 @@ export default function Home() {
 
   useEffect(()=>{
     let cartas = document.querySelectorAll('.card')
+    if(inicio===0){
+      cartas.forEach(element => {
+        element.classList.add('flip')
+      });
+
+      setTimeout(()=>{
+        cartas.forEach(element => {
+          element.classList.remove('flip')
+        });
+      }, 1000)
+      addNum(1)
+    }
     let cartasVitoria = []
     cartas.forEach(carta => {
       carta.addEventListener("click",()=>{
@@ -32,27 +42,35 @@ export default function Home() {
           carta.classList.add('flip')
           cartasVitoria.push(carta)
           if(cartasVitoria.length==2){
-            verificaAcerto(cartasVitoria)
+            verificaAcerto(cartasVitoria, cartas)
             cartasVitoria = []
           }
         }
       })
     })
 
-    const verificaAcerto = (cartas) => {
-      if(cartas[0].innerText === cartas[1].innerText){
+    const verificaAcerto = (cartasVitoria) => {
+      if(cartasVitoria[0].innerText === cartasVitoria[1].innerText){
         let arrayTeste = []
-        for (let i = cartasEmbaralhadas.length; i >= 0; i--) {
-          if(cartasEmbaralhadas[i] === cartas[0].innerText || cartasEmbaralhadas[i] === cartas[1].innerText){
-            cartasEmbaralhadas.splice(i, 1)
-          }
-        }
-        cartasEmbaralhadas.forEach(element => {
-          arrayTeste.push(element)
-        });
         setTimeout(() => {
+          for (let i = cartasEmbaralhadas.length; i >= 0; i--) {
+            if(cartasEmbaralhadas[i] === cartasVitoria[0].innerText || cartasEmbaralhadas[i] === cartasVitoria[1].innerText){
+              cartasEmbaralhadas.splice(i, 1)
+            }
+          }
+          cartas.forEach(e=>{
+            console.log(e)
+            if(e === cartasVitoria[0].innerText || e === cartasVitoria[1].innerText){
+              e.classList.remove('card')
+              e.classList.add('card-remove')
+            }
+          })
+          cartasEmbaralhadas.forEach(element => {
+            arrayTeste.push(element)
+          });
+
           addCarta(arrayTeste)
-        },1000)
+        },1500)
       }
     }
   
