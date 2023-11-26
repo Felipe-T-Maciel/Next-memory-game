@@ -4,12 +4,17 @@ export default function Home() {
 
   let gay = {
     cartas: [
-      "https://imgv3.fotor.com/images/cover-photo-image/Astronaut-wearing-orange-suits-and-standing-on-the-the-planet.png",
-      "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8JTQwbWFufGVufDB8fDB8fHww&w=1000&q=80"
+      "https://imgv3.fotor.com/images/cover-photo-image/Astronaut-wearing-orange-suits-and-standing-on-the-the-planet.png",   
+      "https://static-cse.canva.com/blob/759754/IMAGE1.jpg",
+      "https://designdobom.com.br/wp-content/uploads/2018/09/imagem_para_sexta_51.jpg",
+      "https://mariananardi.com.br/wp-content/uploads/2018/09/Gato-x-leao.jpg"
     ]
   }
   const [cartasEmbaralhadas, addCarta] = useState([])
   const [inicio, addNum] = useState(0)
+  const [contador, addCont] = useState(0)
+  const [pontoJ1, addJ1] = useState(0)
+  const [pontoJ2, addJ2] = useState(0)
 
   useEffect(() => {
     gay.cartas.map(carta => {
@@ -42,19 +47,27 @@ export default function Home() {
           carta.classList.add('flip')
           cartasVitoria.push(carta)
           if (cartasVitoria.length == 2) {
-            verificaAcerto(cartasVitoria, cartas)
+            if(verificaAcerto(cartasVitoria)){
+              console.log('entrei')
+              if(contador!=2==0){
+                addJ1(pontoJ1+1)
+              }else{
+                addJ1(pontoJ2+1)
+              }
+            }
             cartasVitoria = []
+            addCont(contador+1)
           }
         }
       })
     })
 
     const verificaAcerto = (cartasVitoria) => {
-      if (cartasVitoria[0].innerText === cartasVitoria[1].innerText) {
+      if (cartasVitoria[0].lastChild.lastChild.style.backgroundImage === cartasVitoria[1].lastChild.lastChild.style.backgroundImage) {
         let arrayTeste = []
         setTimeout(() => {
           for (let i = cartasEmbaralhadas.length; i >= 0; i--) {
-            if (cartasEmbaralhadas[i] === cartasVitoria[0].innerText || cartasEmbaralhadas[i] === cartasVitoria[1].innerText) {
+            if (cartasEmbaralhadas[i] === cartasVitoria[0].lastChild.lastChild.style.backgroundImage.slice(5, -2) || cartasEmbaralhadas[i] === cartasVitoria[1].lastChild.lastChild.style.backgroundImage.slice(5, -2)) {
               cartasEmbaralhadas.splice(i, 1)
             }
           }
@@ -64,7 +77,9 @@ export default function Home() {
 
           addCarta(arrayTeste)
         }, 1500)
+        return true
       }
+      return false
     }
 
     const verificaPodeJogar = (carta) => {
@@ -97,21 +112,21 @@ export default function Home() {
         </div>
         <div className="grid grid-cols-3" style={{ gridTemplateColumns: '8% 84% 8%' }}>
           <div className="col-start-1 col-end-2 flex justify-center items-center">
-            <p className="text-white text-4xl font-semibold">3</p>
+            <p className="text-white text-4xl font-semibold">{pontoJ1}</p>
           </div>
           <div className="col-start-2 col-end-3 flex duration-1000 gap-[2%] flex-wrap p-[2%] justify-center h-screen items-center" onChange={() => {
 
           }} >
             {
 
-              cartasEmbaralhadas.map((carta) => {
-                return <Card prop={carta} />
+              cartasEmbaralhadas.map((carta, index) => {
+                return <Card key={index} prop={carta} />
               })
 
             }
           </div>
           <div className="col-start-3 flex justify-center items-center">
-            <p className="text-white text-4xl font-semibold">3</p>
+            <p className="text-white text-4xl font-semibold">{pontoJ2}</p>
           </div>
         </div>
        </div>
