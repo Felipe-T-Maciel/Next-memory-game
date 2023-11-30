@@ -30,6 +30,7 @@ export default function Home() {
   const [contador, addCont] = useState(0)
   const [pontoJ1, addJ1] = useState(0)
   const [pontoJ2, addJ2] = useState(0)
+  const [jogadorAtual, set] = useState('')
 
   useEffect(() => {
     embaralharCartas()
@@ -48,29 +49,14 @@ export default function Home() {
     setCartasEmbaralhadas(cartasDuplicadas);
   };
 
-  let id1 = 0
-  let id2 = 0
-  const verifica = (id) => {
-    if(id1 === 0){
-      id1 = id
+  useEffect(() => {
+    console.clear()
+    if(contador%2===0){
+      set('Jogador 1')
     }else{
-      id2 = id
+      set('Jogador 2')
     }
-    if(id1 != 0 && id2 != 0){
-      console.log(contador);
-      if(verificaCarta(id1, id2)){
-        if(contador!=2==0){
-          addJ1(pontoJ1+1)
-        }else{
-          addJ2(pontoJ2+1)
-        }
-      }
-      viraCartas()
-      id1 = 0
-      id2 = 0
-      addCont(contador+1)
-    }
-  }
+  })
 
   const viraCartas = () => {
     const cards = document.querySelectorAll('.card')
@@ -83,55 +69,90 @@ export default function Home() {
     }, 1500);
   }
 
-  const verificaCarta = (id1, id2) => {
-    if(id1 === id2){
-      let newArrayCard = []
-            setTimeout(() => {
-              for (let i = cartasEmbaralhadas.length - 1; i >= 0; i--) {
-                if(cartasEmbaralhadas[i].id === id1){
-                  cartasEmbaralhadas.splice(cartasEmbaralhadas.indexOf(cartasEmbaralhadas[i]), 1)
-                }else{
-                  newArrayCard.push(cartasEmbaralhadas[i])
-                }
-              }
-            setCartasEmbaralhadas(newArrayCard)
-            }, 1500);
-      return true
-    }
-    return false
-  }
-
+  let carta1 = ''
+  let carta2 = ''
   useEffect(() => {
     const cards = document.querySelectorAll('.card')
     cards.forEach((card) => {
-        card.addEventListener('click', () => {
-            card.classList.add('flip')
-        })
+      card.addEventListener('click', () => {
+        card.classList.add('flip')
+        if(carta1 === ''){
+          carta1 = card.lastChild.lastChild.style.backgroundImage.slice(5,-2)
+        }else{
+          carta2 = card.lastChild.lastChild.style.backgroundImage.slice(5,-2)
+        }
+
+        if(carta1 != '' && carta2 != ''){
+          if(carta1 === carta2){
+            verificaAcerto(cards)
+          }
+          viraCartas()
+          carta1 = ''
+          carta2 = ''
+        }
+      })
     })
   })
 
+  function verificaAcerto(cards){
+    cards.forEach(element => {
+      if(element.lastChild.lastChild.style.backgroundImage.slice(5,-2) === carta1){
+        element.classList.add('invisible')
+        console.log(contador);
+        if(contador%2===0){
+          addJ1(pontoJ1+1)
+        }else{
+          addJ2(pontoJ2+1)
+        }
+      }
+    });
+    verificaSeAcabou(cards)
+  }
+
+  function verificaSeAcabou(cards){
+    let contador = 0
+    cards.forEach(element => {
+      if(element.classList.contains('invisible')){
+        contador+=1
+      }
+    });
+    if(contador === cards.length){
+      return true
+    }
+  }
+
+  let cont = 0
+  const addContador = () => {
+    cont+=1
+    if(cont==2){
+      addCont(contador+1)
+      cont = 0
+    }
+  }
+
   return (
     <>
-       <div className="w-screen h-screen">
-       <div className="flex justify-center items-center h-[5vh]">
-          <p className="text-black text-5xl font-semibold">Memory Game</p>
+       <div className="w-screen h-screen bg-[url('https://cienciaemfoto.proec.ufabc.edu.br/wp-content/uploads/2022/05/No-barriga-no-barriga-no.gif')]">
+       <div className="flex justify-center items-center gap-[10%] ml-[15%] h-[5vh]">
+          <p className="text-gray-300 text-5xl font-semibold">Henrique Game</p>
+          <p className="text-gray-300 text-xl font-semibold">Jogador atual: {jogadorAtual}</p>
         </div>
         <div className="grid grid-cols-3" style={{ gridTemplateColumns: '8% 84% 8%' }}>
           <div className="col-start-1 col-end-2 flex flex-col justify-center items-center">
-            <p className="text-black text-4xl font-semibold">Player-1</p>
-            <p className="text-black text-4xl font-semibold">{pontoJ1}</p>
+            <p className="text-gray-300 text-4xl font-semibold">Player-1</p>
+            <p className="text-gray-300 text-4xl font-semibold">Earns: {pontoJ1}</p>
           </div>
           <div className="col-start-2 col-end-3 flex duration-1000 gap-[2%] flex-wrap p-[2%] justify-center h-screen items-center">
             {cartasEmbaralhadas.map((carta) => (
               <Card
                 prop={carta.foto}
-                onClick={() => verifica(carta.id)}
+                onClick={() => addContador()}
               />
             ))}
           </div>
           <div className="col-start-3 flex flex-col justify-center items-center">
-            <p className="text-black text-4xl font-semibold">Player-2</p>
-            <p className="text-black text-4xl font-semibold">{pontoJ2}</p>
+            <p className="text-gray-300 text-4xl font-semibold">Player-2</p>
+            <p className="text-gray-300 text-4xl font-semibold">Earns: {pontoJ2}</p>
           </div>
         </div>
        </div>
