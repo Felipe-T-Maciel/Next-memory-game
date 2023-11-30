@@ -27,17 +27,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 3%;
     cursor: pointer;
     background-color: rgb(156, 80, 226);
     border-radius: 5%;
     // card duration-1000 flex select-none justify-center items-center p-6 w-[17%] h-[40%]
     
-  }
-
-  .card-remove{
-    animation-duration: 1s;
-    transition-duration: 1s;
-    position: absolute;
-    left: 2;
   }

@@ -3,9 +3,9 @@ export default function Card({prop, onClick}) {
 
     return(
         <>
-            <div className=" card w-[17%] h-[40%]  left-1 duration-1000 bg-cover bg-[url('/textura.png')] " onClick={onClick}>
+            <div className=" card w-[10%] h-[30%] bg-center  left-1 duration-1000 bg-cover bg-[url('/gordo.jpeg')] " onClick={onClick}>
                 <div className="face back h-full w-full ">
-                    <div className="h-full w-full rounded-xl bg-cover bg-[url('')] " style={{backgroundImage: `url(${prop})`}}></div>
+                    <div className="h-full w-full rounded-xl bg-cover bg-center " style={{backgroundImage: `url(${prop})`}}></div>
                 </div>
             </div>
         </>

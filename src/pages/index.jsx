@@ -52,9 +52,9 @@ export default function Home() {
   useEffect(() => {
     console.clear()
     if(contador%2===0){
-      set('Jogador 1')
+      set('player 1')
     }else{
-      set('Jogador 2')
+      set('player 2')
     }
   })
 
@@ -116,7 +116,7 @@ export default function Home() {
         contador+=1
       }
     });
-    if(contador === cards.length){
+    if(contador === cards.length-1){
       return true
     }
   }
@@ -132,17 +132,17 @@ export default function Home() {
 
   return (
     <>
-       <div className="w-screen h-screen bg-[url('https://cienciaemfoto.proec.ufabc.edu.br/wp-content/uploads/2022/05/No-barriga-no-barriga-no.gif')]">
-       <div className="flex justify-center items-center gap-[10%] ml-[15%] h-[5vh]">
-          <p className="text-gray-300 text-5xl font-semibold">Henrique Game</p>
-          <p className="text-gray-300 text-xl font-semibold">Jogador atual: {jogadorAtual}</p>
+       <div className="w-screen h-screen bg-[url('https://i.pinimg.com/originals/8e/46/15/8e46150f790fbefe438d9c2767c32ad1.gif')]">
+       <div className="flex justify-center items-center gap-[10%] ml-[20%] h-[5vh]">
+          <p className="text-gray-300 text-3xl font-semibold">Henrique Game</p>
+          <p className="text-gray-300 text-lg font-semibold">Jogador atual: {jogadorAtual}</p>
         </div>
         <div className="grid grid-cols-3" style={{ gridTemplateColumns: '8% 84% 8%' }}>
           <div className="col-start-1 col-end-2 flex flex-col justify-center items-center">
-            <p className="text-gray-300 text-4xl font-semibold">Player-1</p>
-            <p className="text-gray-300 text-4xl font-semibold">Earns: {pontoJ1}</p>
+            <p className="text-gray-300 text-2xl font-semibold">Player-1</p>
+            <p className="text-gray-300 text-2xl font-semibold">Earns: {pontoJ1}</p>
           </div>
-          <div className="col-start-2 col-end-3 flex duration-1000 gap-[2%] flex-wrap p-[2%] justify-center h-screen items-center">
+          <div className="col-start-2 col-end-3 flex duration-1000 gap-[0.8%] flex-wrap justify-center h-screen items-center">
             {cartasEmbaralhadas.map((carta) => (
               <Card
                 prop={carta.foto}
@@ -151,8 +151,8 @@ export default function Home() {
             ))}
           </div>
           <div className="col-start-3 flex flex-col justify-center items-center">
-            <p className="text-gray-300 text-4xl font-semibold">Player-2</p>
-            <p className="text-gray-300 text-4xl font-semibold">Earns: {pontoJ2}</p>
+            <p className="text-gray-300 text-2xl font-semibold">Player-2</p>
+            <p className="text-gray-300 text-lg font-semibold">Earns: {pontoJ2}</p>
           </div>
         </div>
        </div>
