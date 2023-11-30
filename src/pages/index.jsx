@@ -69,6 +69,7 @@ export default function Home() {
               }else{
                 addJ2(pontoJ2+1)
               }
+              verificaSeGanhou(cartas)
             }
             if(i===0){
               i=1
@@ -79,6 +80,20 @@ export default function Home() {
         }
       })
     })
+
+    const verificaSeGanhou = (cartas) => {
+      setTimeout(() => {
+        let i = 0
+        cartas.forEach(element => {
+          if(element.classList.contains('invisible')){
+            i+=1
+          }
+        })
+        if(i === cartas.length){
+          window.location.reload()
+        }
+      }, 1000);
+    }
 
     const verificaAcerto = (cartasVitoria) => {
       if (cartasVitoria[0].lastChild.lastChild.style.backgroundImage === cartasVitoria[1].lastChild.lastChild.style.backgroundImage) {
